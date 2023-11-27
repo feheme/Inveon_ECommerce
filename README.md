@@ -1,48 +1,47 @@
-# Inveon_ECommerce
+# Inveon E-Commerce Microservices
 
-
-### Microservice Architecture
-##### * API Gateway
-##### * Identity Server
-##### * Ocelot
-##### * SignalR
-##### * Iyzipay
-##### * SMTP Mail
-##### * RabbitMQ
+## Microservice Architecture
+- API Gateway
+- Identity Server
+- Ocelot
+- SignalR
+- Iyzipay
+- SMTP Mail
+- RabbitMQ
 
 ## Setting Up with Docker
 
-To run this project with Docker, follow these steps:
-
 1. Install Docker on your machine:
-   ```bash
-   curl -fsSL https://get.docker.com -o get-docker.sh
-   sudo sh get-docker.sh
+    ```bash
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
+    ```
 
+2. Run the following commands:
+    ```bash
+    docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management  
+    docker run -d --hostname rabbit --name rabbit rabbitmq:3-management
+    ```
 
-2. Run commads:
-   ```bash
-   docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management  
-   docker run -d --hostname rabbit --name rabbit rabbitmq:3-management  
+3. Modify the connection strings in microservices according to your needs. You can find them in the `appsettings.json` file.
 
+## Microservice Architecture
+![Microservice Architecture](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/inveon.png)
 
-### Microservice_Architecture
-![Microservice_Architecture](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/inveon.png)
+## Live Chat
+![Live Chat](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/live_chat_signalr.gif)
 
-### Live_Chat
-![Live_Chat](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/live_chat_signalr.gif)
+## Shopping Cart
+![Shopping Cart](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/shopping_cart.png)
 
-### Shopping_Cart
-![Shopping_Cart](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/shopping_cart.png)
-
-### Order
+## Order
 ![Order](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/Order.png)
 
-### Confirmation
+## Confirmation
 ![Confirmation](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/Confirmation.png)
 
-### E_Mail
-![E_Mail](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/Mail.png)
+## Email
+![Email](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/Mail.png)
 
-### Iyzico
+## Iyzico
 ![Iyzico](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/iyzico.png)
