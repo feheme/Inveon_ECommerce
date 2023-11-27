@@ -1,6 +1,6 @@
 # Inveon E-Commerce Microservices
 
-## Microservice Architecture
+## Microservice Architecture Technologies
 - API Gateway
 - Identity Server
 - Ocelot
@@ -25,7 +25,7 @@
 
 3. Modify the connection strings in microservices according to your needs. You can find them in the `appsettings.json` file.
 
-## Microservice Architecture
+## Microservice Architecture Present
 ![Microservice Architecture](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/inveon.png)
 
 ## Live Chat
