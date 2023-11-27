@@ -1,5 +1,15 @@
 # Inveon_ECommerce
 
+
+### Microservice Architecture
+##### * API Gateway
+##### * Identity Server
+##### * Ocelot
+##### * SignalR
+##### * Iyzipay
+##### * SMTP Mail
+##### * RabbitMQ
+
 ## Setting Up with Docker
 
 To run this project with Docker, follow these steps:
@@ -12,7 +22,7 @@ To run this project with Docker, follow these steps:
 
 2. Run commads:
    ```bash
-   docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
+   docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management  
    docker run -d --hostname rabbit --name rabbit rabbitmq:3-management  
 
 
