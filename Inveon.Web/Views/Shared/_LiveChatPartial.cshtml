@@ -1,0 +1,226 @@
+﻿@{
+    var userName = User.Identity.Name;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canlı Destek Sohbeti</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .custom-support-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .custom-chat-container {
+            position: fixed;
+            bottom: 100px;
+            right: 5px;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            display: none;
+        }
+
+        .custom-chat-header {
+            padding: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .custom-chat-body {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        .custom-chat-footer {
+            border-top: 1px solid #ccc;
+            padding: 5px;
+            display: flex;
+        }
+
+        .custom-message-input {
+            flex: 1;
+            margin-right: 5px;
+            border: 1px solid #007bff;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        #custom-message-input {
+            flex: 1;
+            margin-right: 5px;
+            border: 1px solid #007bff;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .custom-send-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 15px 25px;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+
+        #custom-send-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+            font-size: 20px;
+            transition: background-color 0.3s;
+        }
+
+            #custom-send-button:hover {
+                background-color: #0056b3;
+            }
+
+        .user-message {
+            text-align: left;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+            max-width: 70%;
+            word-wrap: break-word;
+            animation: fadeIn 0.5s ease-in-out;
+            display: inline-block;
+            float: right;
+        }
+
+
+        .other-user-message {
+            text-align: left;
+            background-color: #f0f0f0;
+            color: #000;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+            max-width: 70%;
+            word-wrap: break-word;
+            animation: fadeIn 0.5s ease-in-out;
+            display: inline-block;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+
+
+    <button class="custom-support-button" id="customSupportButton">Canlı Destek</button>
+
+
+    <div class="custom-chat-container" id="customChatContainer">
+        <div class="custom-chat-header" id="customChatHeader">Canlı Destek Sohbeti</div>
+        <div class="custom-chat-body" id="customChatBody">
+            <ul id="customMessageList">
+            </ul>
+        </div>
+        <div class="custom-chat-footer" id="customChatFooter">
+            <input type="text" id="customMessageInput" class="customMessageInput" placeholder="Bir mesaj yazın...">
+            <button class="custom-send-button" id="customSendButton">Gönder</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.9/signalr.min.js"></script>
+    <script>
+        document.getElementById('customSupportButton').addEventListener('click', function () {
+            toggleChat();
+        });
+
+        document.getElementById('customChatHeader').addEventListener('click', function () {
+            toggleChat();
+        });
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        var sendButton = document.getElementById("customSendButton");
+
+        sendButton.disabled = true;
+
+        connection.on("ReceiveMessage", function (user, message) {
+            var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var SendMsg = user + ":\n" + msg ;
+            var li = document.createElement("li");
+     
+            li.textContent = SendMsg;
+
+
+            if (user === "@userName") {
+                li.classList.add("user-message");
+            } else {
+                li.classList.add("other-user-message");
+            }
+
+            document.getElementById("customMessageList").appendChild(li);
+            document.getElementById("customMessageInput").value = "";
+        });
+
+        connection.start().then(function () {
+            connection.invoke("GetConnectionId").then(function (id) {
+                document.getElementById("connectionId").innerText = id;
+            });
+            sendButton.disabled = false;
+        }).catch(function (err) {
+            console.error(err.toString());
+        });
+
+        sendButton.addEventListener("click", function (event) {
+            var user = "@userName";
+            var message = document.getElementById("customMessageInput").value;
+            connection.invoke("SendMessage", user, message).catch(function (err) {
+                console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+
+        function toggleChat() {
+            var chatContainer = document.getElementById('customChatContainer');
+            var supportButton = document.getElementById('customSupportButton');
+
+            if (chatContainer.style.display === 'block') {
+                chatContainer.style.display = 'none';
+                supportButton.style.display = 'block';
+            } else {
+                chatContainer.style.display = 'block';
+                supportButton.style.display = 'none';
+            }
+        }
+
+
+    </script>
+</body>
+</html>
+
+
+<script src="~/js/signalr/signalr.js"></script>
+
+
