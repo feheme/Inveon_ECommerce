@@ -1,5 +1,20 @@
 # Inveon_ECommerce
 
+## Setting Up with Docker
+
+To run this project with Docker, follow these steps:
+
+1. Install Docker on your machine:
+   ```bash
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sudo sh get-docker.sh
+
+
+2. Run commads:
+   ```bash
+   docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
+   docker run -d --hostname rabbit --name rabbit rabbitmq:3-management  
+
 
 ### Microservice_Architecture
 ![Microservice_Architecture](https://github.com/feheme/Inveon_ECommerce/blob/master/github_presentation/inveon.png)
